@@ -108,7 +108,7 @@ class FunctionTest {
                 Mockito.when(logMock.solve(Double.parseDouble(record.get(0)), Double.parseDouble(record.get(1)), functionEps)).thenReturn(Double.valueOf(record.get(2)));
             }
         } catch (IOException ex) {
-            System.err.println("Ты как в тесте IOE поймал?!");
+            System.err.println("Error");
         }
 
     }
@@ -150,10 +150,24 @@ class FunctionTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/csv/input/FunctionIn.csv")
+    void testWithCos(double value, double expected) {
+        Function function = new Function(new Cos(sinMock), sinMock, tanMock, cotMock, cscMock, secMock, logMock);
+        Assertions.assertEquals(expected, function.solve(value, functionEps), eps);
+    }
+    @ParameterizedTest
+    @CsvFileSource(resources = "/csv/input/FunctionIn.csv")
+    void testWithAllCos(double value, double expected) {
+        Function function = new Function(new Cos(sinMock), sinMock, new Tan(sinMock, new Cos(sinMock)), new Cot(sinMock, new Cos(sinMock)), new Csc(sinMock), new Sec(new Cos(sinMock)), logMock);
+        Assertions.assertEquals(expected, function.solve(value, functionEps), eps);
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/csv/input/FunctionIn.csv")
     void testWithSin(double value, double expected) {
         Function function = new Function(cosMock, new Sin(), tanMock, cotMock, cscMock, secMock, logMock);
         Assertions.assertEquals(expected, function.solve(value, functionEps), eps);
     }
+
 
     @ParameterizedTest
     @CsvFileSource(resources = "/csv/input/FunctionIn.csv")

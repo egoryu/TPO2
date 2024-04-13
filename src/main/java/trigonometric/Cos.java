@@ -12,14 +12,16 @@ public class Cos implements CsvSave {
     }
 
     public double solve(double x, double eps) {
-        while (x > Math.PI) {
-            x -= 2.0 * Math.PI;
+        double xTmp = x;
+
+        while (xTmp > Math.PI) {
+            xTmp -= 2.0 * Math.PI;
         }
 
-        while (x < -Math.PI) {
-            x += 2.0 * Math.PI;
+        while (xTmp < -Math.PI) {
+            xTmp += 2.0 * Math.PI;
         }
-        if (x > Math.PI / 2 || x < -Math.PI / 2) {
+        if (xTmp > Math.PI / 2 || xTmp < -Math.PI / 2) {
             return -Math.sqrt(1 - Math.pow(sin.solve(x, eps), 2));
         } else {
             return Math.sqrt(1 - Math.pow(sin.solve(x, eps), 2));
